@@ -9,13 +9,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist mrssoft/yii2-sitemap "*"
+php composer.phar require --prefer-dist mrssoft/yii2-sitemap "dev-master"
 ```
 
 or add
 
 ```json
-"mrssoft/yii2-sitemap": "*"
+"mrssoft/yii2-sitemap": "dev-master"
 ```
 
 to the require section of your composer.json.
