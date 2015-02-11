@@ -79,7 +79,7 @@ class Page extends \yii\db\ActiveRecord implements \mrssoft\sitemap\SitemapInter
     ...
     
     /**
-     * @return string
+     * @return \yii\db\ActiveQuery
      */        
     public static function sitemap()
     {
@@ -87,7 +87,7 @@ class Page extends \yii\db\ActiveRecord implements \mrssoft\sitemap\SitemapInter
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return string
      */
     public function getSitemapUrl()
     {
