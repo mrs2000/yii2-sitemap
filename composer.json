@@ -1,0 +1,22 @@
+{
+    "name": "mrssoft/yii2-sitemap",
+    "version": "1.0.0",
+    "description": "Yii2 sitemap extension",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension","sitemap"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Melnikov Ruslan",
+            "email": "mrs2000@inbox.ru"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "mrssoft\\sitemap\\": ""
+        }
+    }
+}
