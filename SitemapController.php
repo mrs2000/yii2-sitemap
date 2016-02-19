@@ -1,4 +1,4 @@
-<?
+<?php
 
 namespace mrssoft\sitemap;
 
@@ -65,7 +65,8 @@ class SitemapController extends \yii\web\Controller
             $xml = file_get_contents($cachePath);
         }
 
-        header("Content-type: text/xml");
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        \Yii::$app->getResponse()->getHeaders()->set('Content-Type', 'text/xml; charset=utf-8');
         echo $xml;
         \Yii::$app->end();
     }
