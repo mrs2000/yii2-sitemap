@@ -10,6 +10,8 @@ class Sitemap
     const MONTHLY = 'monthly';
     const YEARLY = 'yearly';
     const NEVER = 'never';
+    const LASTMOD_FIELD = 'updated_at';
+    const DEFAULT_PRIORITY = 0.8;
 
     protected $items = [];
 
@@ -19,7 +21,7 @@ class Sitemap
      * @param float $priority
      * @param int $lastMod
      */
-    public function addUrl($url, $changeFreq = self::DAILY, $priority = 0.5, $lastMod = 0)
+    public function addUrl($url, $changeFreq, $priority, $lastMod)
     {
         if (in_array($url, $this->items)) {
             return;
@@ -43,7 +45,7 @@ class Sitemap
      * @param string $changeFreq
      * @param float $priority
      */
-    public function addModels($models, $changeFreq = self::DAILY, $priority = 0.5)
+    public function addModels($models, $changeFreq, $priority, $lastmod)
     {
         foreach ($models as $model) {
             $url = $model->getSitemapUrl();
@@ -54,8 +56,8 @@ class Sitemap
                     'priority' => $priority
                 ];
 
-                if ($model->hasAttribute('date')) {
-                    $item['lastmod'] = $this->dateToW3C($model->getAttribute('date'));
+                if ($model->hasAttribute($lastmod)) {
+                    $item['lastmod'] = $this->dateToW3C($model->getAttribute($lastmod));
                 }
 
                 $this->items[$url] = $item;

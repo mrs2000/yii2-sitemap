@@ -39,7 +39,7 @@ class SitemapController extends \yii\web\Controller
                 $sitemap->addUrl(
                     isset($item['url']) ? Url::toRoute($item['url'], true) : Url::toRoute($item, true),
                     isset($item['change']) ? $item['change'] : Sitemap::DAILY,
-                    isset($item['priority']) ? $item['priority'] : 0.8,
+                    isset($item['priority']) ? $item['priority'] : Sitemap::DEFAULT_PRIORITY,
                     isset($item['lastmod']) ? $item['lastmod'] : 0
                 );
             }
@@ -52,7 +52,8 @@ class SitemapController extends \yii\web\Controller
                     $sitemap->addModels(
                         $obj::sitemap()->all(),
                         isset($model['change']) ? $model['change'] : Sitemap::DAILY,
-                        isset($model['priority']) ? $model['priority'] : 0.8
+                        isset($model['priority']) ? $model['priority'] : Sitemap::DEFAULT_PRIORITY,
+                        isset($model['lastmod']) ? $model['lastmod'] : Sitemap::LASTMOD_FIELD
                     );
                 }
             }
