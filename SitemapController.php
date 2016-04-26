@@ -67,7 +67,6 @@ class SitemapController extends \yii\web\Controller
 
         \Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
         \Yii::$app->getResponse()->getHeaders()->set('Content-Type', 'text/xml; charset=utf-8');
-        echo $xml;
-        \Yii::$app->end();
+        return $xml;
     }
 }
