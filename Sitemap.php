@@ -1,4 +1,5 @@
 <?php
+
 namespace mrssoft\sitemap;
 
 class Sitemap
@@ -43,7 +44,7 @@ class Sitemap
      * @param string $changeFreq
      * @param float $priority
      */
-    public function addModels($models, $changeFreq = self::DAILY, $priority = 0.5)
+    public function addModels($models, $changeFreq = self::DAILY, $priority = 0.5, $lastMod = 0)
     {
         foreach ($models as $model) {
             $url = $model->getSitemapUrl();
@@ -54,8 +55,11 @@ class Sitemap
                     'priority' => $priority
                 ];
 
+
                 if ($model->hasAttribute('date')) {
                     $item['lastmod'] = $this->dateToW3C($model->getAttribute('date'));
+                } else if ($lastMod) {
+                    $item['lastmod'] = $this->dateToW3C($lastMod);
                 }
 
                 $this->items[$url] = $item;
