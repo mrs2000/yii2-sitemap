@@ -45,13 +45,14 @@ class Sitemap
      * @param SitemapInterface[]|\yii\db\ActiveRecord $models
      * @param string $changeFreq
      * @param float $priority
+     * @param $lastmod
      */
 
     public function addModels($models, $changeFreq, $priority, $lastmod)
     {
         foreach ($models as $model) {
             $url = $model->getSitemapUrl();
-            if (!in_array($url, $this->items)) {
+            if (in_array($url, $this->items) === false) {
                 $item = [
                     'loc' => $url,
                     'changefreq' => $changeFreq,
@@ -60,7 +61,6 @@ class Sitemap
 
                 if ($model->hasAttribute($lastmod)) {
                     $item['lastmod'] = $this->dateToW3C($model->getAttribute($lastmod));
-
                 }
 
                 $this->items[$url] = $item;
@@ -96,8 +96,8 @@ class Sitemap
     {
         if (is_int($date)) {
             return date(DATE_W3C, $date);
-        } else {
-            return date(DATE_W3C, strtotime($date));
         }
+
+        return date(DATE_W3C, strtotime($date));
     }
 }

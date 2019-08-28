@@ -2,7 +2,9 @@
 
 namespace mrssoft\sitemap;
 
+use Yii;
 use yii\helpers\Url;
+use yii\web\Response;
 
 class SitemapController extends \yii\web\Controller
 {
@@ -61,10 +63,11 @@ class SitemapController extends \yii\web\Controller
             $xml = file_get_contents($cachePath);
         }
 
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
-        \Yii::$app->getResponse()
+        Yii::$app->response->format = Response::FORMAT_RAW;
+        Yii::$app->getResponse()
                   ->getHeaders()
                   ->set('Content-Type', 'text/xml; charset=utf-8');
+
         return $xml;
     }
 }
