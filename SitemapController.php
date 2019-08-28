@@ -28,10 +28,9 @@ class SitemapController extends \yii\web\Controller
 
     public function actionIndex()
     {
-        $cachePath = \Yii::$app->runtimePath.DIRECTORY_SEPARATOR.$this->cacheFilename;
+        $cachePath = \Yii::$app->runtimePath . DIRECTORY_SEPARATOR . $this->cacheFilename;
 
-        if (empty($this->cacheDuration) || !is_file($cachePath) || filemtime($cachePath) < time() - $this->cacheDuration)
-        {
+        if (empty($this->cacheDuration) || !is_file($cachePath) || filemtime($cachePath) < time() - $this->cacheDuration) {
             $sitemap = new Sitemap();
 
             foreach ($this->urls() as $item)
@@ -44,11 +43,9 @@ class SitemapController extends \yii\web\Controller
                 );
             }
 
-            foreach ($this->models() as $model)
-            {
+            foreach ($this->models() as $model) {
                 $obj = new $model['class'];
                 if ($obj instanceof SitemapInterface) {
-
                     $sitemap->addModels(
                         $obj::sitemap()->all(),
                         isset($model['change']) ? $model['change'] : Sitemap::DAILY,
@@ -60,15 +57,14 @@ class SitemapController extends \yii\web\Controller
 
             $xml = $sitemap->render();
             file_put_contents($cachePath, $xml);
-        }
-        else
-        {
+        } else {
             $xml = file_get_contents($cachePath);
         }
 
         \Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
-        \Yii::$app->getResponse()->getHeaders()->set('Content-Type', 'text/xml; charset=utf-8');
-        echo $xml;
-        \Yii::$app->end();
+        \Yii::$app->getResponse()
+                  ->getHeaders()
+                  ->set('Content-Type', 'text/xml; charset=utf-8');
+        return $xml;
     }
 }
