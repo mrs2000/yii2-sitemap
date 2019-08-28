@@ -50,7 +50,8 @@ class SitemapController extends \mrssoft\sitemap\SitemapController
             [
                 'class' => \app\models\Page::className(),
                 'change' => Sitemap::MONTHLY,
-                'priority' => 0.8
+                'priority' => 0.8,
+                'lastmod' => 'updated_at',
             ]
         ];
     }
