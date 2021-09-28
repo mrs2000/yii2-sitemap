@@ -1,6 +1,11 @@
 Sitemap Extension for Yii 2
 ===========================
 
+[![Latest Stable Version](https://img.shields.io/packagist/v/mrssoft/yii2-sitemap.svg)](https://packagist.org/packages/mrssoft/yii2-sitemap)
+![PHP](https://img.shields.io/packagist/php-v/mrssoft/yii2-sitemap.svg)
+![Github](https://img.shields.io/github/license/mrs2000/yii2-sitemap.svg)
+![Total Downloads](https://img.shields.io/packagist/dt/mrssoft/yii2-sitemap.svg)
+
 Installation
 ------------
 
@@ -9,13 +14,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist mrssoft/yii2-sitemap "dev-master"
+php composer.phar require mrssoft/yii2-sitemap "^2.0"
 ```
 
 or add
 
-```json
-"mrssoft/yii2-sitemap": "dev-master"
+```
+"mrssoft/yii2-sitemap": "^2.0"
 ```
 
 to the require section of your composer.json.
@@ -28,6 +33,7 @@ Create controller `SitemapController.php`
 
 ```php
 <?php
+
 namespace app\controllers;
 
 use \mrssoft\sitemap\Sitemap;
@@ -43,12 +49,16 @@ class SitemapController extends \mrssoft\sitemap\SitemapController
      * @var string Cache filename
      */
     protected $cacheFilename = 'sitemap.xml';
+    
+    protected $enablePriority = false;
 
-    public function models()
+    protected $enableChangeFreq = false;    
+
+    public function models(): array
     {
         return [
             [
-                'class' => \app\models\Page::className(),
+                'class' => \app\models\Page::class,
                 'change' => Sitemap::MONTHLY,
                 'priority' => 0.8,
                 'lastmod' => 'updated_at',
@@ -56,12 +66,11 @@ class SitemapController extends \mrssoft\sitemap\SitemapController
         ];
     }
 
-    public function urls()
+    public function urls(): array
     {
         return [
             [
-                'url' => 'about/index',
-                'change' => Sitemap::MONTHLY,
+                'url' => ['about/index'],
                 'priority' => 0.8
             ]
         ];
@@ -82,17 +91,17 @@ class Page extends \yii\db\ActiveRecord implements \mrssoft\sitemap\SitemapInter
     /**
      * @return \yii\db\ActiveQuery
      */        
-    public static function sitemap()
+    public static function sitemap(): \yii\db\ActiveQuery
     {
-        return self::find()->where('public=1');
+        return self::find()->where(['public' => 1]);
     }
 
     /**
      * @return string
      */
-    public function getSitemapUrl()
+    public function getSitemapUrl(): string
     {
-        return  \yii\helpers\Url::toRoute(['page/view', 'url' => $this->url], true);
+        return \yii\helpers\Url::toRoute(['page/view', 'url' => $this->url], true);
     }    
 }
 ```

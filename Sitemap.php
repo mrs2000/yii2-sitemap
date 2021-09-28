@@ -4,25 +4,27 @@ namespace mrssoft\sitemap;
 
 class Sitemap
 {
-    const ALWAYS = 'always';
-    const HOURLY = 'hourly';
-    const DAILY = 'daily';
-    const WEEKLY = 'weekly';
-    const MONTHLY = 'monthly';
-    const YEARLY = 'yearly';
-    const NEVER = 'never';
-    const LASTMOD_FIELD = 'updated_at';
-    const DEFAULT_PRIORITY = 0.8;
+    public const ALWAYS = 'always';
+    public const HOURLY = 'hourly';
+    public const DAILY = 'daily';
+    public const WEEKLY = 'weekly';
+    public const MONTHLY = 'monthly';
+    public const YEARLY = 'yearly';
+    public const NEVER = 'never';
+
+    public const LASTMOD_FIELD = 'updated_at';
+
+    public const DEFAULT_PRIORITY = 0.8;
 
     protected $items = [];
 
     /**
-     * @param $url
+     * @param string $url
      * @param string $changeFreq
      * @param float $priority
-     * @param int $lastMod
+     * @param string $lastMod
      */
-    public function addUrl($url, $changeFreq, $priority, $lastMod)
+    public function addUrl(string $url, string $changeFreq, float $priority, string $lastMod): void
     {
         if (in_array($url, $this->items)) {
             return;
@@ -45,10 +47,10 @@ class Sitemap
      * @param SitemapInterface[]|\yii\db\ActiveRecord $models
      * @param string $changeFreq
      * @param float $priority
-     * @param $lastmod
+     * @param string $lastmod
      */
 
-    public function addModels($models, $changeFreq, $priority, $lastmod)
+    public function addModels(array $models, string $changeFreq, float $priority, string $lastmod): void
     {
         foreach ($models as $model) {
             $url = $model->getSitemapUrl();
@@ -71,15 +73,21 @@ class Sitemap
     /**
      * @return string XML code
      */
-    public function render()
+    public function render(bool $enablePriority, bool $enablechangeFreq): string
     {
         $dom = new \DOMDocument('1.0', 'utf-8');
         $urlset = $dom->createElement('urlset');
-        $urlset->setAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+        $urlset->setAttribute('xmlns', 'https://www.sitemaps.org/schemas/sitemap/0.9');
         foreach ($this->items as $item) {
             $url = $dom->createElement('url');
 
             foreach ($item as $key => $value) {
+                if ($key === 'priority' && $enablePriority === false) {
+                    continue;
+                }
+                if ($key === 'changefreq' && $enablechangeFreq === false) {
+                    continue;
+                }
                 $elem = $dom->createElement($key);
                 $elem->appendChild($dom->createTextNode($value));
                 $url->appendChild($elem);
@@ -92,7 +100,7 @@ class Sitemap
         return $dom->saveXML();
     }
 
-    protected function dateToW3C($date)
+    protected function dateToW3C($date): string
     {
         if (is_int($date)) {
             return date(DATE_W3C, $date);
